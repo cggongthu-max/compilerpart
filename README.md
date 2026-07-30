@@ -24,3 +24,7 @@ chengguang-macmini simple-arith-out % ~/Downloads/mmix-20131017/mmix -t1 simple-
   (halted at location #0000000000000114)
 
 Check the result value is 9.
+
+TODO 下趟: int s;int i;s=0;i=1;while(i<=100){
+  s=s+i;i=i+1;
+}
