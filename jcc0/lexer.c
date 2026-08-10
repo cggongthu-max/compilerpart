@@ -1,4 +1,5 @@
 #include "lexer.h"
+#include "jcc0_lex.h"          /* + new include */
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -13,7 +14,10 @@ Token next_token(void) {
     Token tok = {TK_EOF, ""};
     int idx = 0;
 
-    while (isspace((unsigned char)*input)) input++;
+    /* before: while (isspace((unsigned char)*input)) input++; */
+    struct jcc0_lex_ctl ctl = { input };
+    jcc0_lex_skipspaces(&ctl);
+    input = ctl.input;
 
     /* 标识符 / 关键字 */
     if (isalpha((unsigned char)*input) || *input == '_') {

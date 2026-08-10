@@ -1,8 +1,13 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c99 -g
-SRCS    = main.c lexer.c ast.c parser.c symtab.c codegen.c
+
+# --- Main compiler ---
+SRCS    = main.c lexer.c ast.c parser.c symtab.c codegen.c ../jcc0part/jcc0_lex.c
 OBJS    = $(SRCS:.c=.o)
-TARGET  = jcc02m
+TARGET  = JCC02M
+
+CFLAGS  += -I../jcc0part
+SRCS    += ../jcc0part/jcc0_lex.c
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
@@ -10,10 +15,18 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# --- Unit test for jcc0_lex ---
+TEST_LEX = jcc0_lex_test
+$(TEST_LEX): jcc0_lex_test.o jcc0_lex.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+test: $(TEST_LEX)
+	./$(TEST_LEX)
+
 run: $(TARGET)
 	./$(TARGET)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) jcc0_lex_test.o $(TARGET) $(TEST_LEX)
 
-.PHONY: run clean
+.PHONY: test run clean
