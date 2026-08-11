@@ -1,8 +1,6 @@
 # Compilerpart
 
-Incremental experiments in building a compiler targeting the **MMIX** architecture
-(Knuth's 64-bit RISC machine). Each sub-project compiles a progressively larger
-subset of C into MMIX assembly, verified on the MMIX simulator.
+Incremental experiments in building a compiler targeting MMIX assembly.
 
 ---
 
@@ -146,10 +144,9 @@ Expected value: **5050** (= 1+2+...+100).
 
 ---
 
-## Testing Methodology
+## Testing
 
-Since this compiler targets a bare-metal subset (no `printf`, no stdlib),
-correctness is verified via the **MMIX simulator**:
+Right now we are at an early stage of the compiler. End-to-end testing is achieved through inspecting registers in the MMIX simulator.
 
 1. **Assemble** the generated `.mms` file with `mmixal`.
 2. **Run** with `mmix -t1` (trace mode) to observe every instruction.
@@ -159,23 +156,3 @@ correctness is verified via the **MMIX simulator**:
 |------|-------------------|----------------|---------|
 | simple-arith | `$1` | `9` | `3*(5-2)` |
 | jcc0 (i100-sum) | `$2` | `5050` | `1+2+...+100` |
-
-Tools used: [MMIX tools by Donald Knuth](https://mmix.cs.hm.edu/)
-(`mmixal` assembler + `mmix` simulator).
-
----
-
-## Roadmap
-
-- [x] Part 1: Arithmetic expressions → MMIX
-- [x] Part 2: While loops, variables, assignments → MMIX (JCC0)
-- [ ] Part 3: `if` / `else` support
-- [ ] Part 4: Functions and `return`
-- [ ] Part 5: `printf` (via MMIX trap or I/O simulation)
-
----
-
-## References
-
-- Donald E. Knuth, *The Art of Computer Programming*, Vol. 1, Fascicle 1 — MMIX
-- [MMIX Supplement](https://mmix.cs.hm.edu/) — assembler, simulator, documentation
