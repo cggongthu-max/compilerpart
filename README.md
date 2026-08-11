@@ -156,3 +156,7 @@ Right now we are at an early stage of the compiler. End-to-end testing is achiev
 |------|-------------------|----------------|---------|
 | simple-arith | `$1` | `9` | `3*(5-2)` |
 | jcc0 (i100-sum) | `$2` | `5050` | `1+2+...+100` |
+
+## TODO
+Implement strip_vdecl()
+
