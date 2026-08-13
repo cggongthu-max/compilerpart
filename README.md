@@ -49,19 +49,6 @@ Main    IS   @
         TRAP 0,Halt,0
 ```
 
-**Verification (mmix simulator trace):**
-```
-$ mmix -t1 simple-arith-out0
-1. 0000000000000100: e3010003 (SETL) $1=l[1] = #3
-1. 0000000000000104: e3020005 (SETL) rL=3, $2=l[2] = #5
-1. 0000000000000108: e3030002 (SETL) rL=4, $3=l[3] = #2
-1. 000000000000010c: 24020203 (SUB)  $2=l[2] = 5 - 2 = 3
-1. 0000000000000110: 18010102 (MUL)  $1=l[1] = 3 * 3 = 9
-1. 0000000000000114: 00000000 (TRAP) Halt(0)
-```
-
-`$1 = 9` ✓ — matches `3*(5-2) = 9`.
-
 ---
 
 ## Part 2 — JCC0 (`jcc0/`)
@@ -123,6 +110,39 @@ L0      SET $202,100
 L1      TRAP 0,Halt,0
 ```
 
+
+---
+
+## Testing
+
+Right now we are at an early stage of the compiler. End-to-end testing is achieved through inspecting registers in the MMIX simulator.
+
+1. **Assemble** the generated `.mms` file with `mmixal`.
+2. **Run** with `mmix -t1` (trace mode) to observe every instruction.
+3. **Inspect registers** at halt to confirm the expected result.
+
+| Part | Expected Register | Expected Value | Meaning |
+|------|-------------------|----------------|---------|
+| simple-arith | `$1` | `9` | `3*(5-2)` |
+| jcc0 (i100-sum) | `$2` | `5050` | `1+2+...+100` |
+
+**Simple Arithmetic**
+
+**Verification (mmix simulator trace):**
+```
+$ mmix -t1 simple-arith-out0
+1. 0000000000000100: e3010003 (SETL) $1=l[1] = #3
+1. 0000000000000104: e3020005 (SETL) rL=3, $2=l[2] = #5
+1. 0000000000000108: e3030002 (SETL) rL=4, $3=l[3] = #2
+1. 000000000000010c: 24020203 (SUB)  $2=l[2] = 5 - 2 = 3
+1. 0000000000000110: 18010102 (MUL)  $1=l[1] = 3 * 3 = 9
+1. 0000000000000114: 00000000 (TRAP) Halt(0)
+```
+
+`$1 = 9` ✓ — matches `3*(5-2) = 9`.
+
+**I100-SUM**
+
 **Verification:** Run under the MMIX simulator and inspect `$2` after halt.
 Expected value: **5050** (= 1+2+...+100).
 
@@ -142,21 +162,6 @@ Expected value: **5050** (= 1+2+...+100).
 # Confirm $2 = #13BA (= 5050 decimal) at halt
 ```
 
----
-
-## Testing
-
-Right now we are at an early stage of the compiler. End-to-end testing is achieved through inspecting registers in the MMIX simulator.
-
-1. **Assemble** the generated `.mms` file with `mmixal`.
-2. **Run** with `mmix -t1` (trace mode) to observe every instruction.
-3. **Inspect registers** at halt to confirm the expected result.
-
-| Part | Expected Register | Expected Value | Meaning |
-|------|-------------------|----------------|---------|
-| simple-arith | `$1` | `9` | `3*(5-2)` |
-| jcc0 (i100-sum) | `$2` | `5050` | `1+2+...+100` |
-
 ## TODO
-Implement strip_vdecl()
+Document JCC0STK
 
