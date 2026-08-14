@@ -1,13 +1,17 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c99 -g
 
+# --- MDEBUG mode switch ---
+ifdef JCC_MINI_DEBUG_PRET
+CFLAGS += -DJCC_MINI_DEBUG_PRET
+endif
+
 # --- Main compiler ---
 SRCS    = main.c lexer.c ast.c parser.c symtab.c codegen.c ../jcc0part/jcc0_lex.c
 OBJS    = $(SRCS:.c=.o)
-TARGET  = JCC02M
+TARGET  = jcc02m
 
 CFLAGS  += -I../jcc0part
-SRCS    += ../jcc0part/jcc0_lex.c
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
@@ -26,7 +30,11 @@ test: $(TEST_LEX)
 run: $(TARGET)
 	./$(TARGET)
 
+# --- Debug build ---
+debug: CFLAGS += -DJCC_MINI_DEBUG_PRET
+debug: $(TARGET)
+
 clean:
 	rm -f $(OBJS) jcc0_lex_test.o $(TARGET) $(TEST_LEX)
 
-.PHONY: test run clean
+.PHONY: test run debug clean
