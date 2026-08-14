@@ -2,6 +2,11 @@
 
 Incremental experiments in building a compiler targeting MMIX assembly.
 
+## Dependencies
+
+We aim for a self-compilable compiler, hence we try to minimize dependencies.
+Currently in order to use this software, you need the mmix toolchain,
+a C compiler, and `make`.
 
 ## JCC0 (`jcc0/`)
 
