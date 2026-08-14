@@ -51,7 +51,7 @@ An easier way to test the compiler is to use the `ret` variable.
 compilerpart % jcc0/jcc02m cctest/i100-sum.c >i100-sum-out/i100-sum-jcc0-mdebug-out.mms
 compilerpart % ~/Downloads/mmix-20131017/mmixal i100-sum-out/i100-sum-jcc0-mdebug-out.mms
 compilerpart % ~/Downloads/mmix-20131017/mmix i100-sum-out/i100-sum-jcc0-mdebug-out   
-ret = 505
+ret = 5050
 ```
 
 
