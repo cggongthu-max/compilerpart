@@ -7,7 +7,7 @@ CFLAGS += -DJCC_MINI_DEBUG_PRET
 endif
 
 # --- Main compiler ---
-SRCS    = main.c lexer.c ast.c parser.c symtab.c codegen.c ../jcc0part/jcc0_lex.c
+SRCS    = main.c lexer.c symtab.c tokenbuf.c gen.c ../jcc0part/jcc0_lex.c
 OBJS    = $(SRCS:.c=.o)
 TARGET  = jcc02m
 

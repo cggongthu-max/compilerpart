@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "lexer.h"
-#include "ast.h"
-#include "parser.h"
+#include "tokenbuf.h"
 #include "symtab.h"
-#include "codegen.h"
+#include "gen.h"
 
-/* 从文件读入全部源码 */
-static char *read_file(const char *path) {
+static char *read_file(const char *path)
+{
     FILE *fp = fopen(path, "r");
     if (!fp) { perror(path); exit(1); }
     fseek(fp, 0, SEEK_END);
@@ -22,27 +20,34 @@ static char *read_file(const char *path) {
     return buf;
 }
 
-/* 遍历 AST，将所有 ND_DECL 注册进符号表 */
-static void register_decls(ASTNode *prog, SymTab *st) {
-    for (int i = 0; i < prog->child_count; i++) {
-        ASTNode *child = prog->children[i];
-        if (child->type == ND_DECL) {
-            if (symtab_add(st, child->name) < 0) {
-                fprintf(stderr, "Error: too many variables or duplicate '%s'\n",
-                        child->name);
-                exit(1);
-            }
+/* First pass over the token stream: collect declarations for register allocation.
+ * No AST needed — we just walk the flat token array. */
+static void register_decls(SymTab *st)
+{
+    int p = 0;
+    while (tokenbuf_get(p) && tokenbuf_get(p)->type == TK_INT) {
+        p++; /* skip 'int' */
+        Token *ident = tokenbuf_get(p);
+        if (!ident || ident->type != TK_IDENT) {
+            fprintf(stderr, "Error: expected identifier after 'int'\n");
+            exit(1);
         }
+        if (symtab_add(st, ident->text) < 0) {
+            fprintf(stderr, "Error: too many variables\n");
+            exit(1);
+        }
+        p++; /* skip ident */
+        p++; /* skip ';'  */
     }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     const char *source;
 
     if (argc >= 2) {
         source = read_file(argv[1]);
     } else {
-        /* 内置测试用例 */
         source =
             "int s; int i;\n"
             "s = 0; i = 1;\n"
@@ -52,20 +57,18 @@ int main(int argc, char **argv) {
             "}\n";
     }
 
-    /* 1. 词法 + 语法 */
-    lexer_init(source);
-    ASTNode *program = parse_program();
+    /* 1. Lex + build structural metadata (match table) */
+    tokenbuf_init(source);
 
-    /* 2. 语义：注册变量 */
+    /* 2. Register variables */
     SymTab symtab;
     symtab_init(&symtab);
-    register_decls(program, &symtab);
+    register_decls(&symtab);
 
-    /* 3. 代码生成 */
-    codegen(program, &symtab);
+    /* 3. Parse & generate in one walk — the call stack IS the tree */
+    generate(&symtab);
 
-    /* 4. 清理 */
-    ast_free(program);
-
+    /* 4. Clean up */
+    tokenbuf_free();
     return 0;
 }
