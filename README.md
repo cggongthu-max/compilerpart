@@ -1,6 +1,6 @@
 # Compilerpart
 
-Incremental experiments in building a compiler targeting MMIX assembly.
+Incremental experiments building a compiler targeting MMIX assembly.
 
 ## Dependencies
 
