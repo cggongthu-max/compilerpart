@@ -65,11 +65,9 @@ void generate(SymTab *st)
     printf("\tLOC  Data_Segment\n");
     printf("\tGREG @\n");
 
-    /* `make debug` mdebug mode provides an easy way to test the
-       compiler. Test program would set the `ret` global variable
-       and the compiler would generate instructions to print it.
-       This is useful when compiler is at early stage and have not
-       implemented printf.
+    /* `make debug` would set the JCC_MINI_DEBUG_PRET macro.
+       Test program would set the `ret` global variable
+       and under debug mode compiler generates instructions to print it.
     */
 #ifdef JCC_MINI_DEBUG_PRET
     printf("DbgPfx\tBYTE\t\"ret = \",0\n");

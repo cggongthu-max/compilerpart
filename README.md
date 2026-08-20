@@ -103,5 +103,5 @@ Expected value: **5050** (= 1+2+...+100).
 ```
 
 ## TODO
-Document JCC0STK
-
+- Support Unicode
+- Document JCC0STK
