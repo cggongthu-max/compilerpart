@@ -4,6 +4,18 @@
 static TokenBuf tb;
 int *token_match;
 
+/* In JCC0, instead of using ASTs, we use a flat buffer tokenbuf
+   to store information for parsing. To think about tokenbuf,
+   simply think what information you need while iterating on
+   ASTs in later phases, and store that information in a flat
+   buffer. For example, you need to know that a block contains
+   5 statements, then you would need to store that flatly, while
+   using ASTs you would put it as a list. Storing information
+   flatly is easier and more efficient representation. Source
+   code for compilation would usually be not too large, and a
+   tokenbuf stores information compactly.
+*/
+
 void tokenbuf_init(const char *source)
 {
     lexer_init(source);
