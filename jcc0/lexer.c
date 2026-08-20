@@ -28,6 +28,7 @@ Token next_token(void) {
         tok.text[idx] = '\0';
         if (strcmp(tok.text, "int") == 0)       tok.type = TK_INT;
         else if (strcmp(tok.text, "while") == 0) tok.type = TK_WHILE;
+	else if (strcmp(tok.text, "return") == 0) tok.type = TK_RETURN;
         else                                     tok.type = TK_IDENT;
         return tok;
     }
