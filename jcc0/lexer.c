@@ -80,6 +80,7 @@ Token next_token(void) {
         case '}': tok.type = TK_RBRACE; strcpy(tok.text, "}"); break;
         case '(': tok.type = TK_LPAREN; strcpy(tok.text, "("); break;
         case ')': tok.type = TK_RPAREN; strcpy(tok.text, ")"); break;
+        case ',': tok.type = TK_COMMA;  strcpy(tok.text, ","); break;
         case '\0': return tok;
         default:
             fprintf(stderr, "Lexer error: unknown character '%c'\n", *input);

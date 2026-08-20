@@ -6,6 +6,7 @@ typedef enum {
     TK_ASSIGN, TK_LE, TK_GE, TK_EQ, TK_NE, TK_LT, TK_GT,
     TK_PLUS, TK_MINUS, TK_MUL, TK_DIV,
     TK_SEMI, TK_LBRACE, TK_RBRACE, TK_LPAREN, TK_RPAREN,
+    TK_COMMA,
     TK_EOF
 } TokenType;
 
