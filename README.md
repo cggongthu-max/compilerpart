@@ -1,25 +1,14 @@
 # Compilerpart
 
-Incremental experiments building a compiler targeting MMIX assembly.
+The Compilerpart project is an experimental mini C compiler (`JCC0`) to MMIX
+assembly.
 
-## Dependencies
+With the self-lifting goal in mind, software dependencies are minimized---
+it requires only the mmix toolchain, a C compiler, and `make`.
 
-We aim for a self-compilable compiler, hence we try to minimize dependencies.
-Currently in order to use this software, you need the mmix toolchain,
-a C compiler, and `make`.
-
-## JCC0 (`jcc0/`)
-
-**Goal:** Compile a small subset of C to MMIX. Supported features:
-
-| Feature | Example |
-|---------|---------|
-| `int` variable declarations | `int s; int i;` |
-| Assignment | `s = 0;` |
-| Arithmetic expressions | `s + i`, `i + 1` |
-| Comparison operators | `<=`, `>=`, `<`, `>`, `==`, `!=` |
-| `while` loop | `while (i <= 100) { ... }` |
-| Block statements | `{ ... }` |
+Albeit `JCC0` is currently bare bones and incomplete, it is able
+to compile some programs. You're welcome to submit programs that you
+would like to compile as a feature request.
 
 **Input:**
 ```c
@@ -30,14 +19,13 @@ while (i <= 100) {
     s = s + i;
     i = i + 1;
 }
-ret = s; /* Right now we don't support printf, but under debug mode
-  setting ret would print the value and let us inspect the result. */
+ret = s; /* under debug mode `ret` would be printed */
 ```
 
 **Build & Run:**
 ```bash
 cd jcc0
-make debug // debug mode would print the var ret
+make debug # debug mode would print the var ret
 ./jcc02m input.c      # or compile from file
 ```
 
@@ -45,8 +33,7 @@ make debug // debug mode would print the var ret
 
 ## Testing
 
-Right now we are at an early stage of the compiler.
-An easier way to test the compiler is to use the `ret` variable.
+Use `debug` mode to test the compiler and inspect the `ret` variable.
 ```
 compilerpart % jcc0/jcc02m cctest/i100-sum.c >i100-sum-out/i100-sum-jcc0-mdebug-out.mms
 compilerpart % ~/Downloads/mmix-20131017/mmixal i100-sum-out/i100-sum-jcc0-mdebug-out.mms
