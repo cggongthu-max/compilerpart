@@ -90,5 +90,6 @@ Expected value: **5050** (= 1+2+...+100).
 ```
 
 ## TODO
-- Support Unicode
-- Document JCC0STK
+- [High] Lexer: Support char and string literals
+- [Medium] Support Unicode
+- [Low] Document JCC0STK
